@@ -28,4 +28,15 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println(out)
+
+	// execute code
+	execute := client.Container().From("golang:1.20-alpine").
+		WithDirectory("/src", src).WithWorkdir("/src"). // mount source directory to /src
+		WithExec([]string{"go", "run", "main.go"})
+	out, err = execute.Stdout(ctx)
+	if err != nil {
+		fmt.Printf("Error running code: %s", err)
+		os.Exit(1)
+	}
+	fmt.Println(out)
 }
